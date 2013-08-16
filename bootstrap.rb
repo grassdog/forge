@@ -1,4 +1,4 @@
-dep 'dev-box' do
+dep 'bootstrap' do
   requires 'benhoskings:tree.bin'
   requires 'compactcode:ack.managed'
   requires 'benhoskings:ncurses.managed'
