@@ -4,15 +4,23 @@ dep 'ruby development' do
     on :linux,
       'ruby-build',
       'chruby-global',
-      '1.9.3.chruby',
       'gemrc',
       'default-ruby-version',
-      'bundler.gem'.with(:version => '1.9.3'),
-      'pry-debugger.gem'.with(:version => '1.9.3'),
-      '2.0.0.chruby',
-      'bundler.gem'.with(:version => '2.0.0'),
-      'pry-debugger.gem'.with(:version => '2.0.0')
+      'ruby 1.9.3',
+      'ruby 2.0.0'
   }
+end
+
+dep 'ruby 1.9.3' do
+  requires '1.9.3.chruby',
+           'bundler.gem'.with(:version => '1.9.3'),
+           'pry-debugger.gem'.with(:version => '1.9.3')
+end
+
+dep 'ruby 2.0.0' do
+  requires '2.0.0.chruby',
+           'bundler.gem'.with(:version => '2.0.0'),
+           'pry-debugger.gem'.with(:version => '2.0.0')
 end
 
 dep 'core software' do
