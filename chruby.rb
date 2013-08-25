@@ -85,8 +85,6 @@ meta :gem do
   accepts_value_for :ruby_version, '1.9.3'
 
   template {
-    requires "#{ruby_version}.chruby"
-
     met? {
       `chruby-exec #{ruby_version} -- gem list #{gem_name}`.include? gem_name
     }
@@ -96,22 +94,34 @@ meta :gem do
   }
 end
 
-dep 'bundler.gem', :version do
-  version.default!('1.9.3')
-
-  ruby_version version
+dep 'bundler.1.9.3.gem' do
+  gem_name 'bundler'
+  ruby_version '1.9.3'
+  requires '1.9.3.chruby'
 end
 
-dep 'pry-debugger.gem', :version do
-  version.default!('1.9.3')
+dep 'pry-debugger.1.9.3.gem' do
+  gem_name 'pry-debugger'
+  ruby_version '1.9.3'
+  requires '1.9.3.chruby'
+end
 
-  ruby_version version
+dep 'bundler.2.0.0.gem' do
+  gem_name 'bundler'
+  ruby_version '2.0.0'
+  requires '2.0.0.chruby'
+end
+
+dep 'pry-debugger.2.0.0.gem' do
+  gem_name 'pry-debugger'
+  ruby_version '2.0.0'
+  requires '2.0.0.chruby'
 end
 
 dep 'default-ruby-version', :version_spec do
-  version_spec.default!('1.9.3')
+  version_spec.default!('2.0.0')
 
-  met? { '~/.ruby-version'.p.exists? }
+  met? { '~/.ruby-version'.p.grep version_spec }
 
   meet { '~/.ruby-version'.p.touch.write version_spec }
 end

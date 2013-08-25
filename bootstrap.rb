@@ -13,14 +13,14 @@ end
 
 dep 'ruby 1.9.3' do
   requires '1.9.3.chruby',
-           'bundler.gem'.with(:version => '1.9.3'),
-           'pry-debugger.gem'.with(:version => '1.9.3')
+           'bundler.1.9.3.gem'
+           'pry-debugger.1.9.3.gem'
 end
 
 dep 'ruby 2.0.0' do
   requires '2.0.0.chruby',
-           'bundler.gem'.with(:version => '2.0.0'),
-           'pry-debugger.gem'.with(:version => '2.0.0')
+           'bundler.2.0.0.gem'
+           'pry-debugger.2.0.0.gem'
 end
 
 dep 'core software' do
