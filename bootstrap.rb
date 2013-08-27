@@ -1,3 +1,8 @@
+# These deps need to be run in root
+dep 'stage1' do
+  requires 'postgres-apt-repo'
+end
+
 
 dep 'ruby development' do
   requires {
