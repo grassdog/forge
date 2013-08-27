@@ -2,7 +2,9 @@
 
 PATH=/usr/local/bin:$PATH
 
-type babushka 2> /dev/null || sh -c "`curl https://babushka.me/up`" < /dev/null
+sudo apt-get update && sudo apt-get -y install ruby
+
+type babushka || sudo sh -c "`curl https://babushka.me/up`" < /dev/null
 
 mkdir -p /home/vagrant/.babushka/sources
 ln -s /vagrant /home/vagrant/.babushka/sources/forge
