@@ -1,0 +1,11 @@
+<VirtualHost *:<%= port %>>
+	ServerName <%= hostname %>
+	DocumentRoot <%= webroot.p %>
+
+	<Directory "<%= webroot.p %>">
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride All
+		Order allow,deny
+		Allow from all
+	</Directory>
+</VirtualHost>

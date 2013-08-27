@@ -7,7 +7,7 @@ install_ruby () {
 }
 
 ready_babushka () {
-  type babushka || sh -c "`curl https://babushka.me/up`" < /dev/null
+  type babushka || sudo sh -c "`curl https://babushka.me/up`" < /dev/null
 }
 
 bootstrap () {
@@ -17,7 +17,6 @@ bootstrap () {
   sudo babushka ${NAME}:stage1
   babushka ${NAME}:bootstrap
 }
-
 
 install_ruby
 ready_babushka

@@ -49,20 +49,26 @@ dep 'postgres backups' do
   }
 end
 
-dep 'postgres-apt-repo' do
-  requires 'keyed apt source'.with(:uri => 'http://apt.postgresql.org/pub/repos/apt/',
-                        :release => 'wheezy-pgdg',
-                        :repo => 'main',
-                        :key_sig => 'ACCC4CF8',
-                        :key_uri => 'https://www.postgresql.org/media/keys/ACCC4CF8.asc')
+dep 'postgres gpg key added' do
+  met? { `sudo apt-key list`[/ACCC4CF8/] }
+  meet { sudo "wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -" }
+end
+
+dep 'postgres apt source added' do
+  met? {
+    "/etc/apt/sources.list".p.grep %r{^deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main$}
+  }
+  meet {
+    sudo 'echo "deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main" >> /etc/apt/sources.list'
+    sudo "apt-get update"
+  }
 end
 
 dep 'postgres.managed', :version do
-  version.default('9.2')
+  version.default('9.3')
   # Assume the installed version if there is one
   version.default!(shell('psql --version').val_for('psql (PostgreSQL)')[/^\d\.\d/]) if which('psql')
-  # requires 'set.locale'
-  # requires 'postgres-apt-repo'
+  requires 'postgres gpg key added', 'postgres apt source added'
 
   installs {
     via :apt, ["postgresql-#{owner.version}", "libpq-dev"]
