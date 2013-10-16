@@ -7,14 +7,12 @@ install_ruby () {
 }
 
 ready_babushka () {
-  type babushka || sudo sh -c "`curl https://babushka.me/up`" < /dev/null
+  type babushka >/dev/null 2>&1 || sudo sh -c "`curl https://babushka.me/up`" < /dev/null
 }
 
 bootstrap () {
   NAME=$1
-  # TODO May need to install source in root as well
   babushka sources --add ${NAME} https://github.com/grassdog/${NAME}.git
-  sudo babushka ${NAME}:stage1
   babushka ${NAME}:bootstrap
 }
 

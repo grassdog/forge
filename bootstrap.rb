@@ -1,14 +1,17 @@
-dep 'stage1' do
-  # TODO add any deps that need to be run as root
-end
-
-dep 'stage2' do
+dep 'bootstrap' do
   requires 'core software', 'server software', 'ruby development'
 end
 
-dep 'bootstrap' do
-  # TODO this guy could trigger babushka to do a sudo stage1 and then the rest
-  # though creating a met dep will be tricky. Can I do without one?
+dep 'core software' do
+  requires {
+    on :linux, 'vim.bin', 'curl.bin', 'tree.bin', 'wget.managed', 'htop.bin', 'lsof.bin'
+  }
+end
+
+dep 'server software' do
+  requires {
+    on :linux, 'postgres.managed'.with(version: '9.3'), 'mongodb', 'apache2.managed'
+  }
 end
 
 dep 'ruby development' do
@@ -33,17 +36,5 @@ dep 'ruby 2.0.0' do
   requires '2.0.0.chruby',
            'bundler.2.0.0.gem',
            'pry-debugger.2.0.0.gem'
-end
-
-dep 'core software' do
-  requires {
-    on :linux, 'vim.bin', 'curl.bin', 'tree.bin', 'wget.managed', 'htop.bin', 'lsof.bin'
-  }
-end
-
-dep 'server software' do
-  requires {
-    on :linux, 'postgres.managed'.with(version: '9.3'), 'mongodb', 'apache2.managed'
-  }
 end
 
