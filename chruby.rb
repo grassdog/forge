@@ -30,7 +30,7 @@ dep 'chruby-global' do
 
 source /usr/local/share/chruby/chruby.sh
 source /usr/local/share/chruby/auto.sh
-chruby $(cat ~/.ruby-version 2> /dev/null || echo '1.9.3')
+chruby $(cat ~/.ruby-version 2> /dev/null || echo '2.0.0')
 EOF
 
   met? {
@@ -44,7 +44,7 @@ end
 
 meta :chruby do
   accepts_value_for :version, :basename
-  accepts_value_for :patchlevel, 'p448'
+  accepts_value_for :patchlevel, 'p247'
 
   template {
     requires 'ruby-build'
@@ -92,30 +92,6 @@ meta :gem do
       log_shell "gem install #{gem_name}", "chruby-exec #{ruby_version} -- gem install #{gem_name}"
     }
   }
-end
-
-dep 'bundler.1.9.3.gem' do
-  gem_name 'bundler'
-  ruby_version '1.9.3'
-  requires '1.9.3.chruby'
-end
-
-dep 'pry-debugger.1.9.3.gem' do
-  gem_name 'pry-debugger'
-  ruby_version '1.9.3'
-  requires '1.9.3.chruby'
-end
-
-dep 'bundler.2.0.0.gem' do
-  gem_name 'bundler'
-  ruby_version '2.0.0'
-  requires '2.0.0.chruby'
-end
-
-dep 'pry-debugger.2.0.0.gem' do
-  gem_name 'pry-debugger'
-  ruby_version '2.0.0'
-  requires '2.0.0.chruby'
 end
 
 dep 'default-ruby-version', :version_spec do

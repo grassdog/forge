@@ -1,5 +1,5 @@
 dep 'bootstrap' do
-  requires 'system', 'core software', 'server software', 'ruby development'
+  requires 'system', 'core software', 'server software', 'ruby development', 'passenger apache'
 end
 
 dep 'core software' do
