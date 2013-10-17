@@ -2,6 +2,7 @@ dep 'passenger.2.0.0.gem' do
   gem_name 'passenger'
   ruby_version '2.0.0'
   requires '2.0.0.chruby'
+  system_wide true
 end
 
 dep 'passenger apache' do
@@ -10,13 +11,12 @@ dep 'passenger apache' do
            # 'apache module enabled'.with(module_name: 'passenger')
 end
 
-# TODO I may need to install passenger gem as root
 dep 'passenger apache install' do
   requires 'apache2-mpm-prefork.managed',
            'apache2-prefork-dev.managed',
            'passenger.2.0.0.gem'
 
-  met? { "/home/vagrant/.gem/ruby/2.0.0/gems/passenger-4.0.20/buildout/apache2/mod_passenger.so".p.exists? }
+  met? { "/opt/rubies/2.0.0-p247/lib/ruby/gems/2.0.0/gems/passenger-4.0.20/buildout/apache2/mod_passenger.so".p.exists? }
   meet { "chruby-exec 2.0.0 -- sudo passenger-install-apache2-module --auto" }
 end
 
@@ -26,8 +26,8 @@ dep 'passenger apache config' do
   met? { "/etc/apache2/apache2.conf".p.grep /LoadModule passenger_module/ }
   meet {
     sudo "echo \"\n# Passenger config\" >> /etc/apache2/apache2.conf"
-    sudo "echo \"LoadModule passenger_module /home/vagrant/.gem/ruby/2.0.0/gems/passenger-4.0.20/buildout/apache2/mod_passenger.so\" >> /etc/apache2/apache2.conf"
-    sudo "echo \"PassengerRoot /home/vagrant/.gem/ruby/2.0.0/gems/passenger-4.0.20\" >> /etc/apache2/apache2.conf"
+    sudo "echo \"LoadModule passenger_module /opt/rubies/2.0.0-p247/lib/ruby/gems/2.0.0/gems/passenger-4.0.20/buildout/apache2/mod_passenger.so\" >> /etc/apache2/apache2.conf"
+    sudo "echo \"PassengerRoot /opt/rubies/2.0.0-p247/lib/ruby/gems/2.0.0/gems/passenger-4.0.20\" >> /etc/apache2/apache2.conf"
     sudo "echo \"PassengerDefaultRuby /opt/rubies/2.0.0-p247/bin/ruby\" >> /etc/apache2/apache2.conf"
   }
   after { sudo 'service apache2 restart' }

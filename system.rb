@@ -73,10 +73,10 @@ dep 'secured ssh logins' do
       PermitRootLogin
       ChallengeResponseAuthentication
     ].each {|option|
-      shell("sed -i'' -e 's/^[# ]*#{option}\\W*\\w*$/#{option} no/' #{ssh_conf_path(:sshd)}")
+      sudo("sed -i'' -e 's/^[# ]*#{option}\\W*\\w*$/#{option} no/' #{ssh_conf_path(:sshd)}")
     }
   }
-  after { shell "/etc/init.d/ssh restart" }
+  after { sudo "/etc/init.d/ssh restart" }
 end
 
 dep 'lax host key checking' do
