@@ -1,28 +1,37 @@
-dep 'locale' do
-  requires 'generated.locale'
-  requires 'configuration.locale'
+meta :locale do
+  def locale_regex locale_name
+    /#{locale_name}\.utf-?8/i
+  end
+  def local_locale locale_name
+    shell('locale -a').split("\n").detect {|l|
+      l[locale_regex(locale_name)]
+    }
+  end
 end
 
-meta 'render' do
-  accepts_value_for :source
-  accepts_value_for :target
-
-  template {
-    def template
-      dependency.load_path.parent / source
+dep 'set.locale', :locale_name do
+  locale_name.default!('en_AU')
+  requires 'exists.locale'.with(locale_name)
+  met? {
+    shell('locale').val_for('LANG')[locale_regex(locale_name)]
+  }
+  meet {
+    if Babushka.host.matches?(:apt)
+      sudo("echo 'LANG=#{local_locale(locale_name)}' > /etc/default/locale")
+    elsif Babushka.host.matches?(:bsd)
+      sudo("echo 'LANG=#{local_locale(locale_name)}' > /etc/profile")
     end
-
-    met? { Babushka::Renderable.new(target).from?(template) }
-    meet { render_erb template, :to => target }
+  }
+  after {
+    log "Setting the locale doesn't take effect until you log out and back in."
   }
 end
 
-dep 'generated.locale', :template => 'render' do
-  source 'locale.gen.erb'
-  target '/etc/locale.gen'
-end
-
-dep 'configuration.locale', :template => 'render' do
-  source 'locale.conf.erb'
-  target '/etc/locale.conf'
+dep 'exists.locale', :locale_name do
+  met? {
+    local_locale(locale_name)
+  }
+  meet {
+    sudo "locale-gen #{locale_name}.UTF-8", :log => true
+  }
 end

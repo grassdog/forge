@@ -1,5 +1,5 @@
 dep 'chruby' do
-  version = '0.3.6'
+  version = '0.3.7'
 
   met? {
     '/usr/local/share/chruby/chruby.sh'.p.exists?

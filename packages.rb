@@ -138,7 +138,7 @@ dep 'traceroute.bin'
 dep 'tree.bin'
 dep 'unzip.managed'
 dep 'vim.bin'
-dep 'wget.managed'
+dep 'wget.bin'
 dep 'yaml headers.managed' do
   installs {
     via :brew, 'libyaml'

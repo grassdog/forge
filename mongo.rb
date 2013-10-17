@@ -12,10 +12,10 @@ end
 
 dep '10gen apt source added' do
   met? {
-    "/etc/apt/sources.list".p.grep %r{^deb http://downloads-distro.mongodb.org/repo/debian-sysvinit dist 10gen$}
+    "/etc/apt/sources.list".p.grep %r{^deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen$}
   }
   meet {
-    sudo 'echo "deb http://downloads-distro.mongodb.org/repo/debian-sysvinit dist 10gen" >> /etc/apt/sources.list'
+    sudo 'echo "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" >> /etc/apt/sources.list'
     sudo "apt-get update"
   }
 end
