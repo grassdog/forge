@@ -4,7 +4,23 @@ dep 'stage1' do
 end
 
 dep 'system' do
-  requires 'hostname', 'timezone'
+  requires 'hostname',
+           'timezone',
+           'secured ssh logins',
+           'lax host key checking',
+           'admins can sudo',
+           'tmp cleaning grace period'
+end
+
+dep 'user setup', :username, :key do
+  username.default(shell('whoami'))
+  requires [
+    # 'dot files'.with(:username => username),
+    'user exists'.with(:username => username, home_dir_base: '/home'),
+    'passwordless ssh logins'.with(username, key),
+    'public key',
+    # 'zsh'.with(username)
+  ]
 end
 
 dep 'timezone', :zone do
@@ -54,6 +70,7 @@ dep 'secured ssh logins' do
   meet {
     %w[
       PasswordAuthentication
+      PermitRootLogin
       ChallengeResponseAuthentication
     ].each {|option|
       shell("sed -i'' -e 's/^[# ]*#{option}\\W*\\w*$/#{option} no/' #{ssh_conf_path(:sshd)}")
@@ -68,17 +85,17 @@ dep 'lax host key checking' do
     ssh_conf_path(:ssh).p.grep(/^StrictHostKeyChecking[ \t]+no/)
   }
   meet {
-    shell("sed -i'' -e 's/^[# ]*StrictHostKeyChecking\\W*\\w*$/StrictHostKeyChecking no/' #{ssh_conf_path(:ssh)}")
+    sudo("sed -i'' -e 's/^[# ]*StrictHostKeyChecking\\W*\\w*$/StrictHostKeyChecking no/' #{ssh_conf_path(:ssh)}")
   }
 end
 
 dep 'admins can sudo' do
   requires 'admin group'
   met? {
-    !'/etc/sudoers'.p.read.split("\n").grep(/^%admin\b/).empty?
+    sudo ("grep '%admin' /etc/sudoers")
   }
   meet {
-    '/etc/sudoers'.p.append("%admin  ALL=(ALL) ALL\n")
+    sudo ("echo \"%admin  ALL=(ALL) ALL\n\" >> /etc/sudoers")
   }
 end
 
@@ -92,7 +109,7 @@ dep 'tmp cleaning grace period', :for => :ubuntu do
     "/etc/default/rcS".p.grep(/^[^#]*TMPTIME=0/).nil?
   }
   meet {
-    shell("sed -i'' -e 's/^TMPTIME=0$/TMPTIME=30/' '/etc/default/rcS'")
+    sudo("sed -i'' -e 's/^TMPTIME=0$/TMPTIME=30/' '/etc/default/rcS'")
   }
 end
 
