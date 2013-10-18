@@ -26,9 +26,9 @@ dep 'hostname', :host_name, :for => :linux do
     current_hostname == host_name
   }
   meet {
-    sudo "echo #{host_name} > /etc/hostname"
-    sudo "sed -ri 's/^127.0.0.1.*$/127.0.0.1 #{host_name} #{host_name.to_s.sub(/\..*$/, '')} localhost.localdomain localhost/' /etc/hosts"
-    sudo "hostname #{host_name}"
+    shell "echo #{host_name} > /etc/hostname"
+    shell "sed -ri 's/^127.0.0.1.*$/127.0.0.1 #{host_name} #{host_name.to_s.sub(/\..*$/, '')} localhost.localdomain localhost/' /etc/hosts"
+    shell "hostname #{host_name}"
   }
 end
 
@@ -57,7 +57,7 @@ dep 'secured ssh logins' do
       PermitRootLogin
       ChallengeResponseAuthentication
     ].each {|option|
-      sudo("sed -i'' -e 's/^[# ]*#{option}\\W*\\w*$/#{option} no/' #{ssh_conf_path(:sshd)}")
+      shell("sed -i'' -e 's/^[# ]*#{option}\\W*\\w*$/#{option} no/' #{ssh_conf_path(:sshd)}")
     }
   }
   after { sudo "/etc/init.d/ssh restart" }
@@ -69,17 +69,17 @@ dep 'lax host key checking' do
     ssh_conf_path(:ssh).p.grep(/^StrictHostKeyChecking[ \t]+no/)
   }
   meet {
-    sudo("sed -i'' -e 's/^[# ]*StrictHostKeyChecking\\W*\\w*$/StrictHostKeyChecking no/' #{ssh_conf_path(:ssh)}")
+    shell("sed -i'' -e 's/^[# ]*StrictHostKeyChecking\\W*\\w*$/StrictHostKeyChecking no/' #{ssh_conf_path(:ssh)}")
   }
 end
 
 dep 'admins can sudo' do
   requires 'admin group'
   met? {
-    sudo ("grep '%admin' /etc/sudoers")
+    shell ("grep '%admin' /etc/sudoers")
   }
   meet {
-    sudo ("echo \"%admin  ALL=(ALL) ALL\n\" >> /etc/sudoers")
+    shell ("echo \"%admin  ALL=(ALL) ALL\n\" >> /etc/sudoers")
   }
 end
 
@@ -93,6 +93,6 @@ dep 'tmp cleaning grace period', :for => :ubuntu do
     "/etc/default/rcS".p.grep(/^[^#]*TMPTIME=0/).nil?
   }
   meet {
-    sudo("sed -i'' -e 's/^TMPTIME=0$/TMPTIME=30/' '/etc/default/rcS'")
+    shell("sed -i'' -e 's/^TMPTIME=0$/TMPTIME=30/' '/etc/default/rcS'")
   }
 end
