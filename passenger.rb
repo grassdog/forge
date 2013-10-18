@@ -1,10 +1,3 @@
-dep 'passenger.2.0.0.gem' do
-  gem_name 'passenger'
-  ruby_version '2.0.0'
-  requires '2.0.0.chruby'
-  system_wide true
-end
-
 dep 'passenger apache' do
   requires 'passenger apache install',
            'passenger apache config'#,
@@ -14,10 +7,12 @@ end
 dep 'passenger apache install' do
   requires 'apache2-mpm-prefork.managed',
            'apache2-prefork-dev.managed',
-           'passenger.2.0.0.gem'
+           'passenger.gem'
 
   met? { "/opt/rubies/2.0.0-p247/lib/ruby/gems/2.0.0/gems/passenger-4.0.20/buildout/apache2/mod_passenger.so".p.exists? }
-  meet { "sudo chruby-exec 2.0.0 -- /opt/rubies/2.0.0-p247/bin/passenger-install-apache2-module --auto" }
+  meet {
+    shell "sudo chruby-exec 2.0.0 -- /opt/rubies/2.0.0-p247/bin/passenger-install-apache2-module --auto"
+  }
 end
 
 # TODO Extract passenger gem version number

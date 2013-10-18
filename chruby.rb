@@ -44,7 +44,7 @@ end
 
 meta :chruby do
   accepts_value_for :version, :basename
-  accepts_value_for :patchlevel, 'p247'
+  accepts_value_for :patchlevel
 
   template {
     requires 'ruby-build'
@@ -72,17 +72,13 @@ meta :chruby do
   }
 end
 
-dep '1.9.3.chruby' do
-  patchlevel 'p448'
-end
-
 dep '2.0.0.chruby' do
   patchlevel 'p247'
 end
 
 meta :gem do
   accepts_value_for :gem_name, :basename
-  accepts_value_for :ruby_version, '1.9.3'
+  accepts_value_for :ruby_version, '2.0.0'
   accepts_value_for :system_wide, false
 
   template {

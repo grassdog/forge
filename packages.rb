@@ -15,12 +15,6 @@ dep 'curl.lib' do
   }
 end
 
-# dep 'libreadline-dev.lib' do
-#   installs {
-#     via :yum, 'readline-devel'
-#   }
-# end
-
 dep 'erlang.managed' do
   provides 'erl', 'erlc'
 end

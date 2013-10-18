@@ -1,29 +1,9 @@
-dep 'stage1' do
-  # Need to log out after this is run
-  requires 'set.locale'
-end
-
-dep 'system' do
-  requires 'hostname',
-           'timezone',
-           'secured ssh logins',
-           'lax host key checking',
-           'admins can sudo',
-           'tmp cleaning grace period',
-           'ufw running'
-  setup {
-    unmeetable! "This dep has to be run as root." unless shell('whoami') == 'root'
-  }
-end
-
 dep 'user setup', :username, :key do
   username.default(shell('whoami'))
   requires [
-    # 'dot files'.with(:username => username),
     'user exists'.with(:username => username, home_dir_base: '/home'),
     'passwordless ssh logins'.with(username, key),
     'public key',
-    # 'zsh'.with(username)
   ]
 end
 
@@ -116,27 +96,3 @@ dep 'tmp cleaning grace period', :for => :ubuntu do
     sudo("sed -i'' -e 's/^TMPTIME=0$/TMPTIME=30/' '/etc/default/rcS'")
   }
 end
-
-dep 'ufw running' do
-  requires 'ufw.managed'
-
-  setup {
-    unmeetable! "This dep has to be run as root." unless shell('whoami') == 'root'
-  }
-
-  met? {
-    status = shell("ufw status")
-    status.match /Status: active/ and
-    status.match /80\/tcp\s+ALLOW/ and
-    status.match /22\/tcp\s+ALLOW/
-  }
-
-  meet {
-    shell "ufw default deny" and
-    shell "ufw allow 80/tcp" and
-    shell "ufw allow 22/tcp" and
-    shell "ufw --force enable"
-  }
-end
-
-dep 'ufw.managed'
