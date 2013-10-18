@@ -9,7 +9,11 @@ dep 'system' do
            'secured ssh logins',
            'lax host key checking',
            'admins can sudo',
-           'tmp cleaning grace period'
+           'tmp cleaning grace period',
+           'ufw running'
+  setup {
+    unmeetable! "This dep has to be run as root." unless shell('whoami') == 'root'
+  }
 end
 
 dep 'user setup', :username, :key do
@@ -113,3 +117,26 @@ dep 'tmp cleaning grace period', :for => :ubuntu do
   }
 end
 
+dep 'ufw running' do
+  requires 'ufw.managed'
+
+  setup {
+    unmeetable! "This dep has to be run as root." unless shell('whoami') == 'root'
+  }
+
+  met? {
+    status = shell("ufw status")
+    status.match /Status: active/ and
+    status.match /80\/tcp\s+ALLOW/ and
+    status.match /22\/tcp\s+ALLOW/
+  }
+
+  meet {
+    shell "ufw default deny" and
+    shell "ufw allow 80/tcp" and
+    shell "ufw allow 22/tcp" and
+    shell "ufw --force enable"
+  }
+end
+
+dep 'ufw.managed'
