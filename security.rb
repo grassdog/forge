@@ -11,6 +11,7 @@ dep 'ufw ssh and http only' do
     status = shell("ufw status")
     status.match /Status: active/ and
     status.match /80\/tcp\s+ALLOW/ and
+    status.match /443\/tcp\s+ALLOW/ and
     status.match /22\/tcp\s+ALLOW/
   }
 
@@ -18,6 +19,7 @@ dep 'ufw ssh and http only' do
     shell "ufw default deny" and
     shell "ufw allow 80/tcp" and
     shell "ufw allow 22/tcp" and
+    shell "ufw allow 443/tcp" and
     shell "ufw --force enable"
   }
 end
