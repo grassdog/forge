@@ -26,26 +26,9 @@ $ cat #{db_name}.psql | ssh #{username}@#{shell('hostname -f')} 'psql #{db_name}
   }
 end
 
-dep 'pg.gem' do
-  requires 'postgres.managed'
-  provides []
-end
-
 dep 'postgres installed' do
   requires 'postgres.managed'.with(version: '9.3'),
            'postgres password encrypted config'
-end
-
-dep 'postgres password encrypted config' do
-  met? {
-    "/etc/postgresql/9.3/main/postgresql.conf".p.grep /^password_encryption = on/
-  }
-  meet {
-    shell "sed -i'' -e 's/^#password_encryption = on/password_encryption = on/' /etc/postgresql/9.3/main/postgresql.conf"
-  }
-  after {
-    shell "/etc/init.d/postgresql restart"
-  }
 end
 
 dep 'postgres access', :username, :flags do
@@ -55,15 +38,6 @@ dep 'postgres access', :username, :flags do
   flags.default!('-SdR')
   met? { !sudo("echo '\\du' | #{which 'psql'}", :as => 'postgres').split("\n").grep(/^\W*\b#{username}\b/).empty? }
   meet { sudo "createuser #{flags} #{username}", :as => 'postgres' }
-end
-
-dep 'postgres backups' do
-  requires 'postgres.managed'
-  met? { shell? "test -x /etc/cron.hourly/psql_git" }
-  meet {
-    render_erb 'postgres/psql_git.rb.erb', :to => '/usr/local/bin/psql_git', :perms => '755', :sudo => true
-    sudo "ln -sf /usr/local/bin/psql_git /etc/cron.hourly/"
-  }
 end
 
 dep 'postgres gpg key added' do
@@ -93,3 +67,16 @@ dep 'postgres.managed', :version do
   }
   provides "psql ~> #{version}.0"
 end
+
+dep 'postgres password encrypted config' do
+  met? {
+    "/etc/postgresql/9.3/main/postgresql.conf".p.grep /^password_encryption = on/
+  }
+  meet {
+    shell "sed -i'' -e 's/^#password_encryption = on/password_encryption = on/' /etc/postgresql/9.3/main/postgresql.conf"
+  }
+  after {
+    shell "/etc/init.d/postgresql restart"
+  }
+end
+
