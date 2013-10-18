@@ -1,12 +1,12 @@
 dep 'existing postgres db', :username, :db_name do
   requires 'postgres access'.with(:username => username)
   met? {
-    !shell("psql -l") {|shell|
+    !sudo("psql -l", as: username) {|shell|
       shell.stdout.split("\n").grep(/^\s*#{db_name}\s+\|/)
     }.empty?
   }
   meet {
-    shell "createdb -O '#{username}' '#{db_name}'"
+    sudo "createdb -O '#{username}' '#{db_name}'", as: username
   }
 end
 
@@ -59,7 +59,8 @@ dep 'postgres.managed', :version do
   version.default('9.3')
   # Assume the installed version if there is one
   version.default!(shell('psql --version').val_for('psql (PostgreSQL)')[/^\d\.\d/]) if which('psql')
-  requires 'postgres gpg key added', 'postgres apt source added'
+
+  requires 'set.locale', 'postgres gpg key added', 'postgres apt source added'
 
   installs {
     via :apt, ["postgresql-#{owner.version}", "libpq-dev"]
