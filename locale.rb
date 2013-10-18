@@ -13,14 +13,10 @@ dep 'set.locale', :locale_name do
   locale_name.default!('en_AU')
   requires 'exists.locale'.with(locale_name)
   met? {
-    shell('locale').val_for('LANG')[locale_regex(locale_name)]
+    "/etc/default/locale".p.grep /LANG=#{local_locale(locale_name)}/
   }
   meet {
-    if Babushka.host.matches?(:apt)
-      sudo("echo 'LANG=#{local_locale(locale_name)}' > /etc/default/locale")
-    elsif Babushka.host.matches?(:bsd)
-      sudo("echo 'LANG=#{local_locale(locale_name)}' > /etc/profile")
-    end
+    shell("echo 'LANG=#{local_locale(locale_name)}' | sudo tee /etc/default/locale")
   }
   after {
     log "Setting the locale doesn't take effect until you log out and back in."
