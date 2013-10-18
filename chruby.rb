@@ -82,16 +82,11 @@ meta :gem do
   accepts_value_for :system_wide, false
 
   template {
-    def sudo
-      # Also look at using the --no-user-install switch to gem
-      "sudo" if system_wide
-    end
-
     met? {
-      `#{sudo} chruby-exec #{ruby_version} -- gem list #{gem_name}`.include? gem_name
+      `chruby-exec #{ruby_version} -- gem list #{gem_name}`.include? gem_name
     }
     meet {
-      log_shell "gem install #{gem_name}", "#{sudo} chruby-exec #{ruby_version} -- gem install #{gem_name}"
+      log_shell "gem install #{gem_name}", "chruby-exec #{ruby_version} -- gem install #{gem_name}"
     }
   }
 end

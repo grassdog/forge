@@ -11,7 +11,7 @@ dep 'passenger apache install' do
 
   met? { "/opt/rubies/2.0.0-p247/lib/ruby/gems/2.0.0/gems/passenger-4.0.20/buildout/apache2/mod_passenger.so".p.exists? }
   meet {
-    shell "sudo chruby-exec 2.0.0 -- /opt/rubies/2.0.0-p247/bin/passenger-install-apache2-module --auto"
+    shell "chruby-exec 2.0.0 -- /opt/rubies/2.0.0-p247/bin/passenger-install-apache2-module --auto"
   }
 end
 
