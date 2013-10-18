@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 dep 'ufw ssh and http only' do
   requires 'ufw.managed'
 
@@ -26,7 +28,7 @@ dep 'fail2ban apache enabled' do
   requires 'fail2ban.managed'
 
   def content
-    "/etc/fail2ban/jail.conf".p.read
+    File.read("/etc/fail2ban/jail.conf", :encoding => "UTF-8")
   end
 
   met? {

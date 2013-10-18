@@ -12,8 +12,8 @@ dep 'timezone', :zone do
 
   met? { '/etc/timezone'.p.grep zone }
   meet {
-    sudo "echo \"#{zone}\" > /etc/timezone"
-    sudo "dpkg-reconfigure --frontend noninteractive tzdata"
+    shell "echo \"#{zone}\" > /etc/timezone"
+    shell "dpkg-reconfigure --frontend noninteractive tzdata"
   }
 end
 
