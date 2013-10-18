@@ -43,7 +43,7 @@ end
 
 dep 'server software' do
   requires {
-    on :linux, 'postgres.managed'.with(version: '9.3'), 'mongodb', 'apache2.managed', 'nodejs'
+    on :linux, 'postgres installed', 'mongodb', 'apache2.managed', 'nodejs'
   }
 end
 

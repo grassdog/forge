@@ -31,6 +31,23 @@ dep 'pg.gem' do
   provides []
 end
 
+dep 'postgres installed' do
+  requires 'postgres.managed'.with(version: '9.3'),
+           'postgres password encrypted config'
+end
+
+dep 'postgres password encrypted config' do
+  met? {
+    "/etc/postgresql/9.3/main/postgresql.conf".p.grep /^password_encryption = on/
+  }
+  meet {
+    shell "sed -i'' -e 's/^#password_encryption = on/password_encryption = on/' /etc/postgresql/9.3/main/postgresql.conf"
+  }
+  after {
+    shell "/etc/init.d/postgresql restart"
+  }
+end
+
 dep 'postgres access', :username, :flags do
   requires 'postgres.managed'
   requires 'user exists'.with(:username => username)
