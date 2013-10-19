@@ -1,0 +1,34 @@
+<VirtualHost *:80>
+    ServerName laserlike.net
+    DocumentRoot /var/www/laserlike.net/content/current/public
+    ErrorLog /var/www/laserlike.net/logs/error_log
+    CustomLog /var/www/laserlike.net/logs/access_log common
+    <Directory "/var/www/sites/laserlike.net/content/current/public">
+        Options All
+        AllowOverride All
+        Order allow,deny
+        Allow from all
+    </Directory>
+
+    RewriteEngine On
+
+    # Remove the www
+    RewriteCond %{HTTP_HOST} ^www.laserlike.net$ [NC]
+    RewriteRule ^(.*)$ http://laserlike.net/$1 [R=301,L]
+
+    # Mainentance mode
+    RewriteCond %{DOCUMENT_ROOT}/maintenance.html -f
+    RewriteCond %{REQUEST_FILENAME} !/maintenance.html
+    RewriteRule ^.*$    /maintenance.html [L]
+
+    AddType image/x-icon ico
+
+    <IfModule mod_expires.c>
+        ExpiresActive On
+        ExpiresByType text/css                  "access plus 1 year"
+        ExpiresByType application/javascript    "access plus 1 year"
+        ExpiresByType image/png                 "access plus 1 month"
+        ExpiresByType image/jpeg                "access plus 1 month"
+        ExpiresByType image/x-icon              "access plus 1 month"
+    </IfModule>
+</VirtualHost>

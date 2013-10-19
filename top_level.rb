@@ -12,9 +12,11 @@ dep 'stage2' do
   }
 end
 
-# TODO To be run as the deploy user
+# To be run as the deploy user
 dep 'stage3' do
-
+  requires 'existing postgres db'.with(:username => 'deploy', :db_name => 'laserlike_production'),
+           'raygrasso.com.apache_site',
+           'strangemadness.com.apache_site'
 end
 
 

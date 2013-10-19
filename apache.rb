@@ -79,8 +79,18 @@ meta :vhost do
       "/etc/apache2/sites-available/#{sitename}".p
     end
 
+    def template_name
+      if "#{__FILE__.p.parent}/apache/#{hostname}.erb".p.exists?
+        hostname
+      else
+        "vhost"
+      end
+    end
+
     def source
-      "#{__FILE__.p.parent}/apache/vhost.erb".p
+      template = "#{__FILE__.p.parent}/apache/#{template_name}.erb"
+      log "Using config template #{template}"
+      template.p
     end
 
     def configuration
