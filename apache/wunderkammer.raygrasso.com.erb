@@ -1,0 +1,32 @@
+<VirtualHost *:80>
+    ServerName wunderkammer.raygrasso.com
+    DocumentRoot /var/www/wunderkammer.raygrasso.com/content/current/public
+    ErrorLog /var/www/wunderkammer.raygrasso.com/logs/error_log
+    CustomLog /var/www/wunderkammer.raygrasso.com/logs/access_log common
+
+    <Directory "/var/www/sites/wunderkammer.raygrasso.com/content/current/public">
+        Options All
+        AllowOverride All
+        Order allow,deny
+        Allow from all
+    </Directory>
+
+    RewriteEngine On
+
+    # Mainentance mode
+    RewriteCond %{DOCUMENT_ROOT}/maintenance.html -f
+    RewriteCond %{REQUEST_FILENAME} !/maintenance.html
+    RewriteRule ^.*$    /maintenance.html [L]
+
+    AddType image/x-icon ico
+
+    <IfModule mod_expires.c>
+        ExpiresActive On
+        ExpiresByType text/css                  "access plus 1 year"
+        ExpiresByType application/javascript    "access plus 1 year"
+        ExpiresByType image/png                 "access plus 1 month"
+        ExpiresByType image/jpeg                "access plus 1 month"
+        ExpiresByType image/x-icon              "access plus 1 month"
+    </IfModule>
+</VirtualHost>
+

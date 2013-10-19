@@ -20,6 +20,31 @@ dep 'apache_site_dir', :sitename, :username do
   }
 end
 
+meta :apache_rails do
+  accepts_value_for :sitename, :basename
+  accepts_value_for :username
+
+  template {
+    requires "apache_rails_dir".with(sitename: sitename, username: username),
+             "apache site enabled".with(site_name: sitename)
+  }
+end
+
+dep 'apache_rails_dir', :sitename, :username do
+  username.default!(shell('whoami'))
+
+  met? { "/var/www/#{sitename}".p.exists? }
+  meet {
+    sudo "mkdir -p /var/www/#{sitename}/shared/config"
+    sudo "mkdir -p /var/www/#{sitename}/logs"
+    sudo "touch /var/www/#{sitename}/shared/config/database.yml"
+    sudo "touch /var/www/#{sitename}/shared/config/env.rb"
+    sudo "chmod 600 /var/www/#{sitename}/shared/config/database.yml"
+    sudo "chmod 600 /var/www/#{sitename}/shared/config/env.rb"
+    sudo "chown -R #{username}:#{username} '/var/www/#{sitename}'"
+  }
+end
+
 dep 'raygrasso.com.apache_site'
 
 dep 'raygrasso.com.vhost' do
@@ -34,3 +59,9 @@ dep 'strangemadness.com.vhost' do
   hostname "strangemadness.com"
 end
 
+dep 'wunderkammer.raygrasso.com.apache_rails'
+
+dep 'wunderkammer.raygrasso.com.vhost' do
+  webroot "/var/www/wunderkammer.raygrasso.com"
+  hostname "wunderkammer.raygrasso.com"
+end
