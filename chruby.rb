@@ -1,6 +1,8 @@
 dep 'chruby' do
   version = '0.3.7'
 
+  requires 'build-essential.managed'
+
   met? {
     '/usr/local/share/chruby/chruby.sh'.p.exists?
   }

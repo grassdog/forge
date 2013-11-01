@@ -1,6 +1,7 @@
 dep 'ruby-build' do
   requires [
     'curl.lib',
+    'build-essential.managed',
     'readline headers.managed',
     'zlib headers.managed',
     'yaml headers.managed',

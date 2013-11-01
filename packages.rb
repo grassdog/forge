@@ -7,6 +7,11 @@ dep 'coreutils.managed', :for => :osx do
     end
   end
 end
+
+ dep 'build-essential.managed' do
+   met? { `dpkg -s build-essential 2>&1`.include?("\nStatus: install ok installed\n") }
+ end
+
 dep 'curl.lib' do
   installs {
     via :yum, 'libcurl-devel'
