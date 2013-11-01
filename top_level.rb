@@ -14,10 +14,10 @@ end
 
 # To be run as the deploy user
 dep 'stage3' do
-  requires 'existing postgres db'.with(:username => 'deploy', :db_name => 'laserlike_production'),
-           'raygrasso.com.apache_site',
-           'strangemadness.com.apache_site',
-           'wunderkammer.raygrasso.com.apache_rails'
+  requires 'raygrasso.com.apache_site',
+           'strangemadness.com.apache_site'
+  #        ,'existing postgres db'.with(:username => 'deploy', :db_name => 'laserlike_production'),
+  #        'wunderkammer.raygrasso.com.apache_rails'
 end
 
 
