@@ -82,13 +82,30 @@ meta :gem do
   accepts_value_for :gem_name, :basename
   accepts_value_for :ruby_version, '2.0.0'
   accepts_value_for :system_wide, false
+  accepts_value_for :version
+
+  def version_switch
+    if version
+      "-v #{version}"
+    else
+      ""
+    end
+  end
+
+  def version_test
+    if version
+      /#{gem_name}\s+\([^(]*#{Regexp.escape version}/
+    else
+      /#{gem_name}/
+    end
+  end
 
   template {
     met? {
-      `chruby-exec #{ruby_version} -- gem list #{gem_name}`.include? gem_name
+      shell("chruby-exec #{ruby_version} -- gem list #{gem_name}") =~ version_test
     }
     meet {
-      log_shell "gem install #{gem_name}", "chruby-exec #{ruby_version} -- gem install #{gem_name}"
+      log_shell "gem install #{gem_name} #{version_switch}", "chruby-exec #{ruby_version} -- gem install #{gem_name} #{version_switch}"
     }
   }
 end

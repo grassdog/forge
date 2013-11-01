@@ -25,12 +25,6 @@ dep 'bundler.gem' do
   requires '2.0.0.chruby'
 end
 
-dep 'passenger.gem' do
-  gem_name 'passenger'
-  ruby_version '2.0.0'
-  requires '2.0.0.chruby'
-end
-
 dep 'pry-debugger.gem' do
   gem_name 'pry-debugger'
   ruby_version '2.0.0'
