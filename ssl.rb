@@ -18,7 +18,6 @@ dep 'passwordless ssh logins', :username, :key do
     sudo "chown -R #{username}:#{group} '#{ssh_dir}'" unless ssh_dir.owner == username
     shell "chmod 600 #{(ssh_dir / 'authorized_keys')}", :sudo => sudo?
     shell "chown -R #{username}:#{group} '#{ssh_dir / 'authorized_keys'}'", :sudo => sudo?
-    # sudo "chown -R #{username}:#{group} '#{ssh_dir / 'authorized_keys'}'" unless (ssh_dir / 'authorized_keys').owner == username
   }
 end
 
