@@ -19,7 +19,7 @@ dep 'passenger apache install' do
            'apache2-prefork-dev.managed',
            'passenger.gem'
 
-  met? { "/opt/rubies/2.0.0-p247/lib/ruby/gems/2.0.0/gems/passenger-4.0.20/buildout/apache2/mod_passenger.so".p.exists? }
+  met? { "/opt/rubies/2.0.0-p247/lib/ruby/gems/2.0.0/gems/passenger-#{PASSENGER_VERSION}/buildout/apache2/mod_passenger.so".p.exists? }
   meet {
     shell "chruby-exec 2.0.0 -- /opt/rubies/2.0.0-p247/bin/passenger-install-apache2-module --auto"
   }
