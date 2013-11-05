@@ -59,9 +59,9 @@ dep 'strangemadness.com.vhost' do
   hostname "strangemadness.com"
 end
 
-dep 'wunderkammer.raygrasso.com.apache_rails'
+dep 'wunder.raygrasso.com.apache_rails'
 
-dep 'wunderkammer.raygrasso.com.vhost' do
-  webroot "/var/www/wunderkammer.raygrasso.com"
-  hostname "wunderkammer.raygrasso.com"
+dep 'wunder.raygrasso.com.vhost' do
+  webroot "/var/www/wunder.raygrasso.com"
+  hostname "wunder.raygrasso.com"
 end

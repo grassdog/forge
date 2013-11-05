@@ -11,8 +11,7 @@ end
 dep 'passenger apache' do
   requires 'passenger apache install',
            'passenger apache config',
-           'apache module enabled'.with(module_name: 'rewrite'),
-           'apache module enabled'.with(module_name: 'passenger')
+           'apache module enabled'.with(module_name: 'rewrite')
 end
 
 dep 'passenger apache install' do
