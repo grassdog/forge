@@ -152,3 +152,6 @@ dep 'zlib headers.managed' do
   }
   provides []
 end
+
+dep 's3cmd.managed'
+

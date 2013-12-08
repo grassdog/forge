@@ -74,3 +74,12 @@ dep 'wunder collect cron' do
     sudo "ln -sf /usr/local/bin/wunder_collect /etc/cron.hourly/"
   }
 end
+
+dep 'wunder backup cron' do
+  requires 's3cmd configured'
+  met? { shell? "test -x /etc/cron.hourly/wunder_s3_backup" }
+  meet {
+    render_erb 'wunder/wunder_s3_backup.erb', :to => '/usr/local/bin/wunder_s3_backup', :perms => '755', :sudo => true
+    sudo "ln -sf /usr/local/bin/wunder_s3_backup /etc/cron.hourly/"
+  }
+end

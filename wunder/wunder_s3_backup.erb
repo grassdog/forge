@@ -1,0 +1,23 @@
+#!/bin/sh
+
+set -e
+
+#MONGODUMP_PATH="/usr/bin/mongodump --username ##### --password ########"
+MONGODUMP_PATH="/usr/bin/mongodump"
+TIMESTAMP=`date +%F-%H%M`
+S3_BUCKET_NAME="backups.raygrasso.com"
+S3_BUCKET_PATH="wunder-mongodb"
+
+# Create backup
+$MONGODUMP_PATH
+
+# Add timestamp to backup
+mv dump mongodb-$TIMESTAMP
+tar cf mongodb-$TIMESTAMP.tar mongodb-$TIMESTAMP
+
+# Upload to S3
+s3cmd put mongodb-$TIMESTAMP.tar s3://$S3_BUCKET_NAME/$S3_BUCKET_PATH/mongodb-$$
+
+# Delete everything when we're finished
+rm -R -f mongodb-$TIMESTAMP
+rm mongodb-$TIMESTAMP.tar
