@@ -17,7 +17,8 @@ dep 'stage3' do
   requires 'raygrasso.com.apache_site',
            'strangemadness.com.apache_site',
   #        ,'existing postgres db'.with(:username => 'deploy', :db_name => 'laserlike_production'),
-           'wunder.raygrasso.com.apache_rails'
+           'wunder.raygrasso.com.apache_rails',
+           'wunder collect cron'
 end
 
 

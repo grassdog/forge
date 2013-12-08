@@ -65,3 +65,12 @@ dep 'wunder.raygrasso.com.vhost' do
   webroot "/var/www/wunder.raygrasso.com"
   hostname "wunder.raygrasso.com"
 end
+
+dep 'wunder collect cron' do
+  requires 'wunder.raygrasso.com.vhost'
+  met? { shell? "test -x /etc/cron.hourly/wunder_collect" }
+  meet {
+    render_erb 'wunder/wunder_collect.erb', :to => '/usr/local/bin/wunder_collect', :perms => '755', :sudo => true
+    sudo "ln -sf /usr/local/bin/wunder_collect /etc/cron.hourly/"
+  }
+end

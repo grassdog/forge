@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Collect new data every hour for Wunderkammer
+/bin/bash -l -c 'cd /var/www/wunder.raygrasso.com/current && bundle exec rake RAILS_ENV=production db:collect:all >> /var/www/wunder.raygrasso.com/shared/logs/backup_cron.log'
