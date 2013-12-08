@@ -11,13 +11,16 @@ S3_BUCKET_PATH="wunder-mongodb"
 # Create backup
 $MONGODUMP_PATH
 
+DUMP_DIR=mongodb-$TIMESTAMP
+ARCHIVE_NAME=$DUMP_DIR.tar.gz
+
 # Add timestamp to backup
-mv dump mongodb-$TIMESTAMP
-tar cf mongodb-$TIMESTAMP.tar mongodb-$TIMESTAMP
+mv dump $DUMP_DIR
+tar zcf $ARCHIVE_NAME $DUMP_DIR
 
 # Upload to S3
-s3cmd put mongodb-$TIMESTAMP.tar s3://$S3_BUCKET_NAME/$S3_BUCKET_PATH/mongodb-$$
+s3cmd put $ARCHIVE_NAME s3://$S3_BUCKET_NAME/$S3_BUCKET_PATH/$ARCHIVE_NAME
 
 # Delete everything when we're finished
-rm -R -f mongodb-$TIMESTAMP
-rm mongodb-$TIMESTAMP.tar
+rm -R -f $DUMP_DIR
+rm $ARCHIVE_NAME
