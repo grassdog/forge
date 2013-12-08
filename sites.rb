@@ -36,7 +36,7 @@ dep 'apache_rails_dir', :sitename, :username do
   met? { "/var/www/#{sitename}".p.exists? }
   meet {
     sudo "mkdir -p /var/www/#{sitename}/shared/config"
-    sudo "mkdir -p /var/www/#{sitename}/logs"
+    sudo "mkdir -p /var/www/#{sitename}/shared/logs"
     sudo "touch /var/www/#{sitename}/shared/config/database.yml"
     sudo "touch /var/www/#{sitename}/shared/config/env.rb"
     sudo "chmod 600 /var/www/#{sitename}/shared/config/database.yml"
