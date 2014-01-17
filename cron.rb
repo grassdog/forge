@@ -19,8 +19,6 @@ meta :crontab do
       new_crontab = existing_crontab
       new_crontab << "\n"
       new_crontab << "#{cron_line(schedule, command)}\n"
-      # puts "GRASS"
-      # puts new_crontab
       shell("crontab -", :input => new_crontab)
     }
   }
