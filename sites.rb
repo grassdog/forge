@@ -67,29 +67,40 @@ dep 'wunder.raygrasso.com.vhost' do
 end
 
 dep 'wunder collect script installed' do
-  requires 'wunder.raygrasso.com.vhost'
+  requires 'wunder.raygrasso.com.apache_rails'
+
   met? { shell? "test -x /usr/local/bin/wunder_collect" }
   meet {
     render_erb 'wunder/wunder_collect.erb', :to => '/usr/local/bin/wunder_collect', :perms => '755', :sudo => true
   }
 end
 
+dep 'wunder collect.crontab' do
+  schedule "0 * * * *"
+  command "/bin/bash -l -c 'cd /var/www/wunder.raygrasso.com/current && bundle exec rake RAILS_ENV=production db:collect:all >> /var/www/wunder.raygrasso.com/shared/cron_logs/backup_cron.log'"
+end
+
 dep 'wunder backup script installed' do
-  requires 's3cmd configured'
+  requires 's3cmd configured',
+           'wunder.raygrasso.com.apache_rails'
+
   met? { shell? "test -x /usr/local/bin/wunder_s3_backup" }
   meet {
     render_erb 'wunder/wunder_s3_backup.erb', :to => '/usr/local/bin/wunder_s3_backup', :perms => '755', :sudo => true
   }
 end
 
-
-dep 'wunder crontab configured', :template => 'crontab' do
-  requires 'wunder collect script installed',
-           'wunder backup script installed'
-
-  lines_to_add lambda {[
-    ["0 * * * *", "/bin/bash -l -c 'cd /var/www/wunder.raygrasso.com/current && bundle exec rake RAILS_ENV=production db:collect:all >> /var/www/wunder.raygrasso.com/shared/cron_logs/backup_cron.log'"],
-    ["5 8 * * 6", "/usr/local/bin/wunder_s3_backup >> /var/www/wunder.raygrasso.com/shared/cron_logs/mongo_backup.log"],
-  ]}
+dep 'wunder backup.crontab' do
+  schedule "5 8 * * 6"
+  command "/usr/local/bin/wunder_s3_backup >> /var/www/wunder.raygrasso.com/shared/cron_logs/mongo_backup.log"
 end
+
+dep 'wunder crontab configured' do
+  requires 'wunder collect script installed',
+           'wunder collect.crontab',
+           'wunder backup script installed',
+           'wunder backup.crontab'
+end
+
+
 
