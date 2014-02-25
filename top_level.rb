@@ -5,7 +5,9 @@ end
 
 # To be run as root
 dep 'stage2' do
-  requires 'system', 'users', 'core software', 'server software', 'ruby install', 'passenger apache'
+  requires 'system', 'users', 'core software',
+           'server software', 'ruby environment',
+           'passenger apache'
 
   setup {
     unmeetable! "This dep has to be run as root." unless shell('whoami') == 'root'

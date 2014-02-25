@@ -1,5 +1,5 @@
 dep 'chruby' do
-  version = '0.3.7'
+  version = '0.3.8'
 
   requires 'build-essential.managed'
 
@@ -44,48 +44,37 @@ EOF
   }
 end
 
-meta :chruby do
-  accepts_value_for :version, :basename
-  accepts_value_for :patchlevel
+dep 'ruby', :version do
+  requires 'ruby-build'
 
-  template {
-    requires 'ruby-build'
+  def base_path
+    '/opt/rubies'
+  end
 
-    def base_path
-      '/opt/rubies'
-    end
+  def build_path
+    base_path / version
+  end
 
-    def version_spec
-      "#{version}-#{patchlevel}"
-    end
+  met? {
+    build_path.p.exists?
+  }
 
-    def build_path
-      base_path / version_spec
-    end
-
-    met? {
-      build_path.p.exists?
-    }
-
-    meet {
-      shell "mkdir -p #{base_path}", :sudo => true
-      log_shell 'Building via ruby-build', "/usr/local/bin/ruby-build #{version_spec} #{build_path}", :sudo => true
-    }
+  meet {
+    shell "mkdir -p #{base_path}", :sudo => true
+    log_shell 'Building via ruby-build', "/usr/local/bin/ruby-build #{version} #{build_path}", :sudo => true
   }
 end
 
-dep '2.0.0.chruby' do
-  patchlevel 'p247'
-end
+dep 'gem', :gem_name, :version, :ruby_version, :system_wide do
+  system_wide.default!(false)
+  version.default!(:unset)
 
-meta :gem do
-  accepts_value_for :gem_name, :basename
-  accepts_value_for :ruby_version, '2.0.0'
-  accepts_value_for :system_wide, false
-  accepts_value_for :version
+  def version?
+    version != :unset
+  end
 
   def version_switch
-    if version
+    if version?
       "-v #{version}"
     else
       ""
@@ -93,38 +82,20 @@ meta :gem do
   end
 
   def version_test
-    if version
+    if version?
       /#{gem_name}\s+\([^(]*#{Regexp.escape version}/
     else
       /#{gem_name}/
     end
   end
 
-  template {
-    met? {
-      shell("chruby-exec #{ruby_version} -- gem list #{gem_name}") =~ version_test
-    }
-    meet {
-      log_shell "gem install #{gem_name} #{version_switch}", "chruby-exec #{ruby_version} -- gem install #{gem_name} #{version_switch}"
-    }
+  met? {
+    log "Checking for gem #{gem_name} #{version_switch} under #{ruby_version}"
+    shell("chruby-exec #{ruby_version} -- gem list #{gem_name}") =~ version_test
   }
-end
-
-dep 'default-ruby-version', :version_spec do
-  version_spec.default!('2.0.0')
-
-  met? { '~/.ruby-version'.p.grep version_spec }
-
-  meet { '~/.ruby-version'.p.touch.write version_spec }
-end
-
-dep 'gemrc' do
-  met? { '~/.gemrc'.p.exists? }
   meet {
-    '~/.gemrc'.p.touch.write <<EOF
----
-gem: --no-rdoc --no-ri
-EOF
+    log "Installing gem #{gem_name} #{version_switch} under #{ruby_version}"
+    log_shell "gem install #{gem_name} #{version_switch}", "chruby-exec #{ruby_version} -- gem install #{gem_name} #{version_switch}"
   }
 end
 

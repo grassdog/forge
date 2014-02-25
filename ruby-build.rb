@@ -1,5 +1,5 @@
 dep 'ruby-build' do
-  requires [
+  requires_when_unmet [
     'curl.lib',
     'build-essential.managed',
     'readline headers.managed',
