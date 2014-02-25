@@ -5,13 +5,11 @@ dep 'ruby environment' do
       'chruby-global',
       'gemrc',
       '2.1.1.ruby_base',
-      'default-ruby-version'.with(version_spec: '2.1.1')
+      'default-ruby-version'.with(version: '2.1.1')
   }
 end
 
 dep 'default-ruby-version', :version do
-  version.default!('2.1.1')
-
   met? { '~/.ruby-version'.p.grep version }
 
   meet { '~/.ruby-version'.p.touch.write version }
@@ -37,6 +35,6 @@ meta 'ruby_base' do
   }
 end
 
-dep '2.0.0-p247.ruby_base'
 dep '2.1.1.ruby_base'
 
+dep '2.0.0-p247.ruby_base'
