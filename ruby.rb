@@ -5,7 +5,7 @@ dep 'ruby environment' do
       'chruby-global',
       'gemrc',
       '2.1.0.ruby_base',
-      'default-ruby-version'.with(version_spec: '2.0.0'),
+      'default-ruby-version'.with(version_spec: '2.0.0')
   }
 end
 
