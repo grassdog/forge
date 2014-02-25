@@ -1,12 +1,17 @@
 #!/bin/sh
 
-# Script to set up for local Vagrant development
+# Script to setup a local Vagrant environment from scratch
 
-# mkdir -p /home/vagrant/.babushka/sources
-# ln -s /vagrant /home/vagrant/.babushka/sources/forge
-# chown -R vagrant /home/vagrant/.babushka
+vagrant destroy
+vagrant up
+vagrant ssh -- 'source <(curl -s https://raw.github.com/grassdog/forge/master/bootstrap.sh)'
+# Need more swap for my vm
+vagrant ssh -- '/vagrant/dev/add-swap.sh'
+vagrant ssh -- 'sudo babushka sources --add forge https://github.com/grassdog/forge.git'
+vagrant ssh -- 'sudo babushka forge:stage2'
 
-# sudo mkdir -p /root/.babushka/sources
-# sudo ln -s /vagrant /root/.babushka/sources/forge
+# Note that this will ask for params so must be done interactively
+# for s3cmd to be set up properly
+ssh deploy@forge.dev 'babushka sources --add forge https://github.com/grassdog/forge.git'
+ssh deploy@forge.dev 'babushka forge:stage3'
 
-vagrant ssh -- 'sudo source <(curl -s https://raw.github.com/grassdog/forge/master/bootstrap.sh)'
