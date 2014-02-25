@@ -4,13 +4,13 @@ dep 'ruby environment' do
       'ruby-build',
       'chruby-global',
       'gemrc',
-      '2.1.0.ruby_base',
-      'default-ruby-version'.with(version_spec: '2.0.0')
+      '2.1.1.ruby_base',
+      'default-ruby-version'.with(version_spec: '2.1.1')
   }
 end
 
 dep 'default-ruby-version', :version do
-  version.default!('2.0.0')
+  version.default!('2.1.1')
 
   met? { '~/.ruby-version'.p.grep version }
 
@@ -38,5 +38,5 @@ meta 'ruby_base' do
 end
 
 dep '2.0.0-p247.ruby_base'
-dep '2.1.0.ruby_base'
+dep '2.1.1.ruby_base'
 
