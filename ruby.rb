@@ -31,7 +31,6 @@ meta 'ruby_base' do
   template {
     requires 'ruby'.with(version: version)
     requires 'gem'.with(gem_name: 'bundler', ruby_version: version)
-    requires 'gem'.with(gem_name: 'passenger', ruby_version: version)
   }
 end
 
