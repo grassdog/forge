@@ -35,7 +35,7 @@ dep 'postgres access', :username, :flags do
   requires 'postgres.managed'
   requires 'user exists'.with(:username => username)
   username.default(shell('whoami'))
-  flags.default!('-SdR')
+  flags.default!('-SdREP')
   met? { !sudo("echo '\\du' | #{which 'psql'}", :as => 'postgres').split("\n").grep(/^\W*\b#{username}\b/).empty? }
   meet { sudo "createuser #{flags} #{username}", :as => 'postgres' }
 end
