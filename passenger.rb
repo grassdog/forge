@@ -36,11 +36,3 @@ dep 'libapache2-mod-passenger.managed' do
   }
 end
 
-dep 'apache2-mpm-prefork.managed' do
-  met? { `dpkg -s apache2-mpm-prefork 2>&1`.include?("\nStatus: install ok installed\n") }
-end
-
-dep 'apache2-prefork-dev.managed' do
-  met? { `dpkg -s apache2-prefork-dev 2>&1`.include?("\nStatus: install ok installed\n") }
-end
-
