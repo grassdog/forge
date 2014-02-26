@@ -1,5 +1,5 @@
 dep 'summate' do
-  requires 'libqtwebkit-dev.managed'
+  requires 'libqtwebkit-dev.managed',
            'summate db',
            'summate.raygrasso.com.apache_rails'
 
