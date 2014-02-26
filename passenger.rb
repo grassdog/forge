@@ -4,8 +4,8 @@ dep 'passenger apache' do
 end
 
 dep '2.1.1.passenger_apache' do
-  version('4.0.37')
-  ruby_version('2.1.1')
+  version '4.0.37'
+  ruby_version '2.1.1'
 end
 
 meta 'passenger_apache' do
@@ -19,11 +19,11 @@ meta 'passenger_apache' do
     end
 
     requires 'passenger_apache install'.with(version: version,
-                                    ruby_version: ruby_version,
-                                    ruby_major_version: ruby_major_version),
-            'passenger_apache config'.with(version: version,
-                                    ruby_version: ruby_version,
-                                    ruby_major_version: ruby_major_version)
+                                             ruby_version: ruby_version,
+                                             ruby_major_version: ruby_major_version),
+             'passenger_apache config'.with(version: version,
+                                            ruby_version: ruby_version,
+                                            ruby_major_version: ruby_major_version)
   }
 end
 
