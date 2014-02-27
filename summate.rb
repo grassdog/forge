@@ -1,8 +1,9 @@
 dep 'summate' do
   requires 'libqtwebkit-dev.managed',
+           'xvfb',
            'summate db',
-           'summate.raygrasso.com.apache_rails'
-
+           'summate.raygrasso.com.apache_rails',
+           'summate fetch.crontab'
 end
 
 dep 'summate db' do

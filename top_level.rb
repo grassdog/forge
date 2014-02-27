@@ -7,7 +7,7 @@ end
 dep 'stage2' do
   requires 'system', 'users', 'core software',
            'server software', 'ruby environment',
-           'passenger apache', 'xvfb'
+           'passenger apache'
 
   setup {
     unmeetable! "This dep has to be run as root." unless shell('whoami') == 'root'
@@ -18,9 +18,9 @@ end
 dep 'stage3' do
   requires 'raygrasso.com.apache_site',
            'strangemadness.com.apache_site',
-  #        ,'existing postgres db'.with(:username => 'deploy', :db_name => 'laserlike_production'),
            'wunder.raygrasso.com.apache_rails',
-           'wunder crontab configured'
+           'wunder crontab configured',
+           'summate'
 end
 
 
