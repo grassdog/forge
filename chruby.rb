@@ -32,11 +32,11 @@ dep 'chruby-global' do
 
 source /usr/local/share/chruby/chruby.sh
 source /usr/local/share/chruby/auto.sh
-chruby $(cat ~/.ruby-version 2> /dev/null || echo '2.0.0')
+chruby $(cat ~/.ruby-version 2> /dev/null || echo '2.1.1')
 EOF
 
   met? {
-    profile.p.exists?
+    profile.p.exists? && profile.p.read == config
   }
   meet {
     temp.p.touch.write config
