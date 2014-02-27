@@ -20,9 +20,13 @@ dep 'libqtwebkit-dev.managed' do
   met? { `dpkg -s libqtwebkit-dev 2>&1`.include?("\nStatus: install ok installed\n") }
 end
 
-# TODO Add cron job for fetch
-# xvfb-run ./bin/rake RAILS_ENV=production fetch:netbank
+# fetch every three hours
+dep 'summate fetch.crontab' do
+  schedule "0 */3 * * *"
+  command "/bin/bash -l -c 'cd /var/www/summate.raygrasso.com/current && xvfb-run ./bin/rake RAILS_ENV=production fetch:netbank >> /var/www/summate.raygrasso.com/shared/logs/fetch_cron.log'"
+end
 
+# Need xvfb so that headless webkit can run with an xserver on Ubuntu
 dep 'xvfb' do
   requires 'xvfb.managed', 'display-profile'
 end
