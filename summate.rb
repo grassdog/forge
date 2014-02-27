@@ -21,4 +21,24 @@ dep 'libqtwebkit-dev.managed' do
 end
 
 # TODO Add cron job for fetch
+# xvfb-run ./bin/rake RAILS_ENV=production fetch:netbank
 
+dep 'xvfb' do
+  requires 'xvfb.managed', 'display-profile'
+end
+
+dep 'xvfb.managed' do
+  met? { `dpkg -s xvfb 2>&1`.include?("\nStatus: install ok installed\n") }
+end
+
+dep 'display-profile' do
+  profile = '/etc/profile.d/display.sh'
+  config = "\nexport DISPLAY=localhost:1.0\n"
+
+  met? {
+    profile.p.exists? && profile.p.read == config
+  }
+  meet {
+    profile.p.touch.write.config
+  }
+end
