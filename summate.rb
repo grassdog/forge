@@ -3,7 +3,8 @@ dep 'summate' do
            'xvfb',
            'summate db',
            'summate.raygrasso.com.apache_rails',
-           'summate fetch.crontab'
+           'summate fetch.crontab',
+           'summate backup.crontab'
 end
 
 dep 'summate db' do
@@ -25,6 +26,11 @@ end
 dep 'summate fetch.crontab' do
   schedule "0 7,13,17,21 * * *"
   command "/bin/bash -l -c 'cd /var/www/summate.raygrasso.com/current && xvfb-run ./bin/rake RAILS_ENV=production fetch:netbank >> /var/www/summate.raygrasso.com/shared/logs/fetch_cron.log'"
+end
+
+dep 'summate backup.crontab' do
+  schedule "5 8 * * 6"
+  command "/bin/bash -l -c 'cd /var/www/summate.raygrasso.com/current && ./bin/rake RAILS_ENV=production db:backup"
 end
 
 # Need xvfb so that headless webkit can run with an xserver on Ubuntu
