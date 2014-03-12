@@ -16,7 +16,7 @@ end
 
 dep 'wunder collect.crontab' do
   schedule "0 * * * *"
-  command "/bin/bash -l -c 'cd /var/www/wunder.raygrasso.com/current && bundle exec rake RAILS_ENV=production db:collect:all >> /var/www/wunder.raygrasso.com/shared/cron_logs/backup_cron.log'"
+  command "/bin/bash -l -c 'cd /var/www/wunder.raygrasso.com/current && bundle exec rake RAILS_ENV=production db:collect:all >> /var/www/wunder.raygrasso.com/shared/cron_logs/collect.log'"
 end
 
 dep 'wunder backup script installed' do
@@ -41,4 +41,26 @@ dep 'wunder crontab configured' do
            'wunder backup.crontab'
 end
 
+dep 'wunder logrotate created' do
+  def filename
+    "/etc/logrotate.d/wunder"
+  end
 
+  def config
+"""
+/var/www/wunder.raygrasso.com/shared/cron_logs/*.log {
+  weekly
+  missingok
+  rotate 5
+}
+"""
+  end
+
+  met? {
+    filename.p.read == config
+  }
+
+  meet {
+    filename.p.touch.write config
+  }
+end

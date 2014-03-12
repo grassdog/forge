@@ -7,7 +7,9 @@ end
 dep 'stage2' do
   requires 'system', 'users', 'core software',
            'server software', 'ruby environment',
-           'passenger apache'
+           'passenger apache',
+           'summate logrotate created',
+           'wunder logrotate created'
 
   setup {
     unmeetable! "This dep has to be run as root." unless shell('whoami') == 'root'

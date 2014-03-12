@@ -53,3 +53,28 @@ dep 'display-profile' do
     profile.p.touch.write.config
   }
 end
+
+
+dep 'summate logrotate created' do
+  def filename
+    "/etc/logrotate.d/summate"
+  end
+
+  def config
+"""
+/var/www/summate.raygrasso.com/shared/logs/fetch_cron.log {
+  weekly
+  missingok
+  rotate 5
+}
+"""
+  end
+
+  met? {
+    filename.p.read == config
+  }
+
+  meet {
+    filename.p.touch.write config
+  }
+end
