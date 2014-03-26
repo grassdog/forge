@@ -30,7 +30,7 @@ end
 
 dep 'summate backup.crontab' do
   schedule "5 8 * * 6"
-  command "/bin/bash -l -c 'cd /var/www/summate.raygrasso.com/current && ./bin/rake RAILS_ENV=production db:backup"
+  command "/bin/bash -l -c 'cd /var/www/summate.raygrasso.com/current && ./bin/rake RAILS_ENV=production db:backup'"
 end
 
 # Need xvfb so that headless webkit can run with an xserver on Ubuntu
