@@ -47,10 +47,10 @@ end
 
 dep 'postgres apt source added' do
   met? {
-    "/etc/apt/sources.list".p.grep %r{^deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main$}
+    "/etc/apt/sources.list".p.grep %r{^deb http://apt.postgresql.org/pub/repos/apt/ saucy-pgdg main$}
   }
   meet {
-    sudo 'echo "deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main" >> /etc/apt/sources.list'
+    sudo 'echo "deb http://apt.postgresql.org/pub/repos/apt/ saucy-pgdg main" >> /etc/apt/sources.list'
     sudo "apt-get update"
   }
 end
