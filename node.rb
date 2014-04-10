@@ -3,7 +3,7 @@ dep "nodejs" do
   # https://github.com/joyent/node/wiki/Installation
   requires \
     "python-software-properties",
-    "apt source chris-lea-node_js-raring.list added",
+    "apt source chris-lea-node_js-saucy.list added",
     "nodejs deb"
 end
 
@@ -13,9 +13,9 @@ dep "python-software-properties" do
   meet { sudo "apt-get -y install python-software-properties" }
 end
 
-dep "apt source chris-lea-node_js-raring.list added" do
+dep "apt source chris-lea-node_js-saucy.list added" do
   requires "python-software-properties"
-  met? { File.exist?("/etc/apt/sources.list.d/chris-lea-node_js-raring.list") }
+  met? { File.exist?("/etc/apt/sources.list.d/chris-lea-node_js-saucy.list") }
   meet {
     sudo "add-apt-repository ppa:chris-lea/node.js"
     sudo "apt-get update"
@@ -24,7 +24,7 @@ dep "apt source chris-lea-node_js-raring.list added" do
 end
 
 dep "nodejs deb" do
-  requires "apt source chris-lea-node_js-raring.list added"
+  requires "apt source chris-lea-node_js-saucy.list added"
   met? { `dpkg -s nodejs 2>&1`.include?("\nStatus: install ok installed\n") }
   meet { sudo "apt-get -y install nodejs" }
   after {

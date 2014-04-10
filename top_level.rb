@@ -9,7 +9,8 @@ dep 'stage2' do
            'server software', 'ruby environment',
            'passenger apache',
            'summate logrotate created',
-           'wunder logrotate created'
+           'wunder logrotate created',
+           'display-profile'
 
   setup {
     unmeetable! "This dep has to be run as root." unless shell('whoami') == 'root'

@@ -35,7 +35,7 @@ end
 
 # Need xvfb so that headless webkit can run with an xserver on Ubuntu
 dep 'xvfb' do
-  requires 'xvfb.managed', 'display-profile'
+  requires 'xvfb.managed'
 end
 
 dep 'xvfb.managed' do
@@ -50,7 +50,7 @@ dep 'display-profile' do
     profile.p.exists? && profile.p.read == config
   }
   meet {
-    profile.p.touch.write.config
+    profile.p.touch.write config
   }
 end
 

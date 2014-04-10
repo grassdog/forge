@@ -13,14 +13,14 @@ end
 dep 'apache site enabled', :site_name do
   requires_when_unmet 'apache2.managed',
                       "#{site_name}.vhost"
-  met? { "/etc/apache2/sites-enabled/#{site_name}".p.exists? }
+  met? { "/etc/apache2/sites-enabled/#{site_name}.conf".p.exists? }
   meet { log_shell "Enabling apache site '#{site_name}'", "a2ensite '#{site_name}'", :sudo => true }
   after { sudo 'service apache2 reload' }
 end
 
 dep 'apache site disabled', :site_name do
   requires_when_unmet 'apache2.managed'
-  met? { !"/etc/apache2/sites-enabled/#{site_name}".p.exists? }
+  met? { !"/etc/apache2/sites-enabled/#{site_name}.conf".p.exists? }
   meet { log_shell "Disabling apache site '#{site_name}'", "a2dissite '#{site_name}'", :sudo => true }
   after { sudo 'service apache2 reload' }
 end
@@ -76,7 +76,7 @@ meta :vhost do
     require 'erb'
 
     def destination
-      "/etc/apache2/sites-available/#{sitename}".p
+      "/etc/apache2/sites-available/#{sitename}.conf".p
     end
 
     def template_name

@@ -20,10 +20,10 @@ end
 
 dep 'passenger apt source added' do
   met? {
-    "/etc/apt/sources.list".p.grep %r{^deb https://oss-binaries.phusionpassenger.com/apt/passenger raring main$}
+    "/etc/apt/sources.list".p.grep %r{^deb https://oss-binaries.phusionpassenger.com/apt/passenger saucy main$}
   }
   meet {
-    sudo 'echo "deb https://oss-binaries.phusionpassenger.com/apt/passenger raring main" >> /etc/apt/sources.list'
+    sudo 'echo "deb https://oss-binaries.phusionpassenger.com/apt/passenger saucy main" >> /etc/apt/sources.list'
     sudo "apt-get update"
   }
 end
