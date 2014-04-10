@@ -4,4 +4,7 @@
     DocumentRoot /var/www/strangemadness.com/public_html/
     ErrorLog /var/www/strangemadness.com/logs/error.log
     CustomLog /var/www/strangemadness.com/logs/access.log combined
+    <Directory "/var/www/strangemadness.com/public_html">
+      AllowOverride All
+    </Directory>
 </VirtualHost>
