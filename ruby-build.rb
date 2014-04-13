@@ -19,6 +19,7 @@ dep 'ruby-build' do
     Dir.chdir(install_path) do
       sudo './install.sh'
     end
+    shell "rm -r #{install_path}"
   }
 end
 

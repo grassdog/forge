@@ -1,8 +1,10 @@
 #!/bin/sh
 
+set -e
+
 # Prodlike runbook
 
-ssh root@forge   'source <(curl -s https://raw.github.com/grassdog/forge/master/bootstrap.sh)'
+ssh root@forge   'type babushka >/dev/null 2>&1 || sudo sh -c "`curl https://babushka.me/up`" < /dev/null'
 ssh foot@forge   'babushka sources --add forge https://github.com/grassdog/forge.git'
 ssh root@forge   'sudo babushka forge:stage1'
 ssh root@forge   'sudo babushka forge:stage2'

@@ -1,6 +1,9 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+%x(vagrant plugin install vagrant-cachier) unless Vagrant.has_plugin?('vagrant-cachier')
+%x(vagrant plugin install vagrant-vbguest) unless Vagrant.has_plugin?('vagrant-vbguest')
+
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu1310"
   config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/saucy/current/saucy-server-cloudimg-amd64-vagrant-disk1.box"
