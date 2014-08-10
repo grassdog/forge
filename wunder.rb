@@ -16,7 +16,7 @@ end
 
 dep 'wunder collect.crontab' do
   schedule "0 * * * *"
-  command "/bin/bash -l -c 'cd /var/www/wunder.raygrasso.com/current && bundle exec rake RAILS_ENV=production db:collect:all >> /var/www/wunder.raygrasso.com/shared/cron_logs/collect.log'"
+  command "/bin/bash -l -c 'cd /var/www/wunder.raygrasso.com/current && bundle exec rake RAILS_ENV=production trawl:add_new:all >> /var/www/wunder.raygrasso.com/shared/cron_logs/collect.log 2>&1'"
 end
 
 dep 'wunder backup script installed' do
@@ -31,7 +31,7 @@ end
 
 dep 'wunder backup.crontab' do
   schedule "5 8 * * 6"
-  command "/usr/local/bin/wunder_s3_backup >> /var/www/wunder.raygrasso.com/shared/cron_logs/mongo_backup.log"
+  command "/usr/local/bin/wunder_s3_backup >> /var/www/wunder.raygrasso.com/shared/cron_logs/mongo_backup.log 2>&1"
 end
 
 dep 'wunder crontab configured' do

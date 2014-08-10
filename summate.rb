@@ -25,12 +25,12 @@ end
 # Fetch at specific hours in the day
 dep 'summate fetch.crontab' do
   schedule "0 7,13,17,21 * * *"
-  command "/bin/bash -l -c 'cd /var/www/summate.raygrasso.com/current && xvfb-run ./bin/rake RAILS_ENV=production fetch:netbank >> /var/www/summate.raygrasso.com/shared/logs/fetch_cron.log'"
+  command "/bin/bash -l -c 'cd /var/www/summate.raygrasso.com/current && xvfb-run ./bin/rake RAILS_ENV=production fetch:netbank >> /var/www/summate.raygrasso.com/shared/logs/fetch_cron.log 2>&1'"
 end
 
 dep 'summate backup.crontab' do
   schedule "5 8 * * 6"
-  command "/bin/bash -l -c 'cd /var/www/summate.raygrasso.com/current && ./bin/rake RAILS_ENV=production db:backup'"
+  command "/bin/bash -l -c 'cd /var/www/summate.raygrasso.com/current && ./bin/rake RAILS_ENV=production db:backup 2>&1'"
 end
 
 # Need xvfb so that headless webkit can run with an xserver on Ubuntu
