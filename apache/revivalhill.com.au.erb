@@ -1,0 +1,8 @@
+<VirtualHost *:80>
+  ServerName revivalhill.com.au
+  ServerAlias www.revivalhill.com.au
+  DocumentRoot /var/www/revivalhill.com.au/public_html/
+  ErrorLog /var/www/revivalhill.com.au/logs/error.log
+  CustomLog /var/www/revivalhill.com.au/logs/access.log combined
+  ErrorDocument 404 /files/404.html
+</VirtualHost>
