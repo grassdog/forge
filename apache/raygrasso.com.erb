@@ -4,4 +4,7 @@
     DocumentRoot /var/www/raygrasso.com/public_html/
     ErrorLog /var/www/raygrasso.com/logs/error.log
     CustomLog /var/www/raygrasso.com/logs/access.log combined
+    <Directory "/var/www/raygrasso.com/public_html">
+      AllowOverride All
+    </Directory>
 </VirtualHost>
