@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+echo "raygrasso.com"
+php -f feed-subscribers.php < /var/www/raygrasso.com/logs/access.log
+echo
+echo "strangemadness.com"
+php -f feed-subscribers.php < /var/www/strangemadness.com/logs/access.log

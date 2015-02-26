@@ -59,4 +59,28 @@ dep 'strangemadness.com.vhost' do
   hostname "strangemadness.com"
 end
 
+dep 'subscriber-scripts' do
+  requires 'feed-subscribers.php.homefile',
+           'show-subscribers.homefile'
+
+end
+
+meta 'homefile' do
+  template {
+    def filepath
+      "~/#{basename}"
+    end
+
+    met? {
+      filepath.p.exist?
+    }
+
+    meet {
+      log_shell "Installing file", "cp #{__FILE__.p.parent}/files/#{basename} #{filepath}"
+    }
+  }
+end
+
+dep 'feed-subscribers.php.homefile'
+dep 'show-subscribers.homefile'
 

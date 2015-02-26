@@ -23,7 +23,8 @@ dep 'stage3' do
            'strangemadness.com.apache_site',
            'wunder.raygrasso.com.apache_rails',
            'wunder crontab configured',
-           'summate'
+           'summate',
+           'subscriber-scripts'
 end
 
 
