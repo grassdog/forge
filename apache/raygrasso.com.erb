@@ -4,6 +4,8 @@
     DocumentRoot /var/www/raygrasso.com/public_html/
     ErrorLog /var/www/raygrasso.com/logs/error.log
     CustomLog /var/www/raygrasso.com/logs/access.log combined
+    LogFormat "%{Referer}i %U" referer
+    CustomLog /var/www/raygrasso.com/logs/referer.log referer
     <Directory "/var/www/raygrasso.com/public_html">
       AllowOverride All
     </Directory>
